@@ -1,0 +1,40 @@
+<!doctype html>
+<title>Audio Extractor</title>
+<h3>Audio Extractor</h3>
+<p>Enter a URL containing audio links</a>
+<form action="/" method="get">
+  <input type="text" name="url" />
+  <input type="submit" value="extract" />
+</form>
+{% if url %}
+<p> results for <b><i>{{ url }}</i></b> </p>
+
+  {% if error %}
+    <p>Error scraping page</p>
+    <pre>
+      {{ error }}
+    </pre>
+  {% else %}
+    <p><b>Audio looking links:</b></p>
+    {% if data.audio %}
+      <ul>
+      {% for result in data.audio %}
+        <li> <a href="{{ result }}" target="_blank">{{ result }}</a> </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+    <p>No audio links were found on the page</p>
+    {% endif %}
+
+    <p><b>Other links found on this page:</b></p>
+    {% if data.all %}
+      <ul>
+      {% for result in data.all %}
+        <li> <a href="{{ result }}" target="_blank">{{ result }}</a> </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+    <p>No links at all found on this page!</p>
+    {% endif %}
+  {% endif %}
+{% endif %}
