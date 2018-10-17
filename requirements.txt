@@ -1,4 +1,4 @@
-bs4
 flask
 gunicorn
 fleep
+beautifulsoup4

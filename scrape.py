@@ -47,6 +47,42 @@ def fix_url(url, url_info):
         return url_info.scheme + "://" + url_info.netloc + url
     return url
 
+def find_feeds(soup):
+    rss_links = soup.select('link', type='application/rss+xml')
+    print(rss_links)
+    return []
+
+
+def find_urls(soup, base_url):
+    url_info = urlparse(base_url)
+    for link in soup.select('a'):
+        if link.get('href'):
+            href = fix_url(link.get('href'), url_info)
+            if not local_or_javacript(href):
+                yield href
+
+
+def alternate_links(soup, base_url):
+    feed_types = [
+        'application/rss+xml',
+        'application/atom+xml'
+    ]
+    url_info = urlparse(base_url)
+    feed_urls = soup.findAll("link", rel="alternate")
+    result = []
+    for feed_link in feed_urls:
+        url = feed_link.get("href", None)
+        if url:
+            feed_type = feed_link.get("type", "").lower()
+            if feed_type in feed_types:
+                result.append({
+                    'type': feed_link.get("type", ""),
+                    'title': feed_link.get("title", ""),
+                    'url': fix_url(url, url_info)
+                })
+    return result
+
+
 def scrape(url):
     url_info = urlparse(url)
     u = opener.open(url)
@@ -56,21 +92,17 @@ def scrape(url):
         u.close()
 
     soup = BeautifulSoup(html, features="html.parser")
-    results = []
-    all_urls = []
-    for link in soup.select('a'):
-        if not link.get('href'):
-            continue
-        href = fix_url(link.get('href'), url_info)
-        if not local_or_javacript(href):
-            if is_audio_link(href):
-                results.append(href)
-            else:
-                all_urls.append(href)
+    urls = list(find_urls(soup, url))
+    results = list(filter(is_audio_link, urls))
+    all_urls = set(urls) - set(results)
+    links = alternate_links(soup, url)
+
     return {
-            'all': set(all_urls),
-            'audio': set(results)
+        'all': set(all_urls),
+        'audio': set(results),
+        'feeds': links
     }
+
 
 def download(url):
     try:
@@ -91,3 +123,7 @@ def download(url):
         'extension': info.extension,
         'mime': next(iter(info.mime), None)
     }
+
+if __name__ == "__main__":
+    #print(scrape("https://alternativlos.org/35"))
+    print(scrape("https://tarnbarford.net"))

@@ -37,6 +37,21 @@
       {{ error }}
     </pre>
   {% else %}
+
+    <p><b>Feeds:</b></p>
+
+    {% if data.feeds %}
+      <ul>
+      {% for feed in data.feeds %}
+        <li>
+          {{ feed["title"] }} <a href="{{ feed.url }}">{{ feed.url }}</a> ({{ feed["type"] }})
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+    <p>No feeds were found on the page</p>
+    {% endif %}
+
     <p><b>Audio looking links:</b></p>
     {% if data.audio %}
       <ul>

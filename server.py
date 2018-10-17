@@ -17,6 +17,7 @@ def index():
                 data = scrape(url)
             except Exception as e:
                 error = str(e)
+
         else:
             error = "URL should start with either http:// or https://"
 
