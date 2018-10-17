@@ -59,8 +59,13 @@
         <li>
           <a href="{{ result }}" target="_blank">{{ result }}</a>
           <span class="play" >
-            <a href="{{ result }}" class="start"><b>[play]</b></a>
+            <a href="{{ result }}" class="start"><b>[proxy]</b></a>
           </span>
+          <br />
+          <audio controls>
+              <source src="{{ result }}">
+              Your browser does not support the audio element.
+          </audio>
         </li>
       {% endfor %}
       </ul>
