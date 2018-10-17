@@ -125,5 +125,8 @@ def download(url):
     }
 
 if __name__ == "__main__":
-    #print(scrape("https://alternativlos.org/35"))
-    print(scrape("https://tarnbarford.net"))
+    print(scrape("https://alternativlos.org/35"))
+    # https://alternativlos.org/35
+    # http://www.milke.com.au/
+    # https://www.smh.com.au/podcast/the-age-real-footy-podcast
+    # https://www.functionalgeekery.com/
