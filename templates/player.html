@@ -1,0 +1,16 @@
+{% if error %}
+<p>An error occurred downloading the audio file.</p>
+<pre>
+  {{ error }}
+</pre>
+{% else %}
+<p>The file was downloaded successfully it seems.</p>
+<p>The file is {{ data["size"] }} bytes </p>
+<p>The mime type is {{ data["mime"] }} </p>
+<p>The file path is {{ data["path"] }} </p>
+ <audio controls>
+   <source src="/{{ data["path"] }}" type="{{ data["mime"] }}">
+   Unable to play audio, your browser does not support the audio element :(
+ </audio>
+{% endif %}
+

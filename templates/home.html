@@ -6,9 +6,31 @@
   <input type="text" name="url" />
   <input type="submit" value="extract" />
 </form>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    console.log("DOM fully loaded and parsed");
+    var plays = document.querySelectorAll(".play")
+    plays.forEach(function(el) {
+      function reqListener () {
+          el.innerHTML = this.responseText
+      }
+
+      el.querySelector('a.start').addEventListener('click', function(ev) {
+        href = el.querySelector('a.start').href;
+        el.innerHTML = "downloading.."
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", reqListener);
+        oReq.open("GET", "/player?url=" + encodeURIComponent(href));
+        oReq.send();
+        ev.preventDefault()
+      })
+    })
+  });
+
+</script>
+
 {% if url %}
 <p> results for <b><i>{{ url }}</i></b> </p>
-
   {% if error %}
     <p>Error scraping page</p>
     <pre>
@@ -19,7 +41,12 @@
     {% if data.audio %}
       <ul>
       {% for result in data.audio %}
-        <li> <a href="{{ result }}" target="_blank">{{ result }}</a> </li>
+        <li>
+          <a href="{{ result }}" target="_blank">{{ result }}</a>
+          <span class="play" >
+            <a href="{{ result }}" class="start"><b>[play]</b></a>
+          </span>
+        </li>
       {% endfor %}
       </ul>
     {% else %}
@@ -30,7 +57,7 @@
     {% if data.all %}
       <ul>
       {% for result in data.all %}
-        <li> <a href="{{ result }}" target="_blank">{{ result }}</a> </li>
+        <li> <a href="{{ result }}" target="_blank">[{{ result }}</a> </li>
       {% endfor %}
       </ul>
     {% else %}
