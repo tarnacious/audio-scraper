@@ -3,6 +3,7 @@ from flask import render_template
 from scrape import scrape, download
 import os
 from time import sleep
+import podcasts
 
 app = Flask(__name__, static_url_path='/audio', static_folder='audio')
 
@@ -22,7 +23,7 @@ def index():
             error = "URL should start with either http:// or https://"
 
 
-    return render_template('home.html', url=url, data=data, error=error)
+    return render_template('home.html', url=url, data=data, error=error, podcasts=podcasts.podcasts)
 
 @app.route("/player")
 def player():

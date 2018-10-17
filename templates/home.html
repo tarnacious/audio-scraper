@@ -1,6 +1,8 @@
 <!doctype html>
 <title>Audio Extractor</title>
-<h3>Audio Extractor</h3>
+<a href="/">
+	<h3>Audio Extractor</h3>
+</a>
 <p>Enter a URL containing audio links</a>
 <form action="/" method="get">
   <input type="text" name="url" />
@@ -85,7 +87,12 @@
     {% endif %}
   {% endif %}
 {% else %}
-  <p>Eg.</p>
-  <p><a href="/?url=https%3A%2F%2Fwww.thisamericanlife.org%2F658%2Fthe-unhappy-deciders">https://www.thisamericanlife.org/658/the-unhappy-deciders</a></p>
-  <p><a href="/?url=https%3A%2F%2Falternativlos.org%2F35#">https://alternativlos.org/35</a></p>
+	<ul>
+	{% for podcast in podcasts %}
+		<li>
+			<a href="/?url={{ podcast | urlencode }}">{{ podcast }}</a>
+			[<a target="_blank" href="{{ podcast }}">open in browser</a>]
+		</li>
+	{% endfor %}
+	</ul>
 {% endif %}
